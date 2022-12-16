@@ -39,4 +39,6 @@ return require("packer").startup(function(use)
   use {"kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async"}
 
   use("windwp/nvim-spectre")
+
+  use("airblade/vim-gitgutter")
 end)
