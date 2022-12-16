@@ -1,3 +1,4 @@
+local telescope = require("telescope")
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local previewers = require("telescope.previewers")
@@ -5,7 +6,10 @@ local action_state = require("telescope.actions.state")
 local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 
-require("telescope").setup({
+
+telescope.load_extension("git_worktree")
+
+telescope.setup({
 	defaults = {
 		file_sorter = require("telescope.sorters").get_fzy_sorter,
 		prompt_prefix = " >",

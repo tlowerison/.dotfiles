@@ -26,6 +26,7 @@ nnoremap("<leader>bn", "<Cmd>:bn<CR>")  -- cycle to next buffer
 nnoremap("<leader>bp", "<Cmd>:bp<CR>")  -- cycle to previous buffer
 
 -- telescope
+nnoremap("<leader>t", "<Cmd>Telescope<CR>")
 nnoremap("<leader>ff", "<Cmd>Telescope find_files<CR>")
 nnoremap("<leader>fg", "<Cmd>Telescope live_grep<CR>")
 nnoremap("<leader>fb", "<Cmd>Telescope buffers<CR>")
@@ -45,3 +46,7 @@ nnoremap("<A-,>", "<Cmd>NvimTreeFocus<CR>")  -- focus neovim-tree
 
 -- nvim-spectre
 nnoremap("<leader>s", "<Cmd>lua require('spectre').open()<CR>")
+
+-- git-worktree
+nnoremap("<leader>gw", "<Cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>")
+nnoremap("<leader>cgw", "<Cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>")
