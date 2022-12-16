@@ -4,13 +4,7 @@ local vnoremap = Remap.vnoremap
 local inoremap = Remap.inoremap
 local xnoremap = Remap.xnoremap
 
-nnoremap("<A-.>", "<Cmd>NvimTreeToggle<CR>")
-
-nnoremap("<leader>ff", "<Cmd>Telescope find_files<CR>")
-nnoremap("<leader>fg", "<Cmd>Telescope live_grep<CR>")
-nnoremap("<leader>fb", "<Cmd>Telescope buffers<CR>")
-nnoremap("<leader>fh", "<Cmd>Telescope help_tags<CR>")
-
+-- relativenumber
 relativenumber = vim.opt.relativenumber
 function toggle_relative_line_number()
   if(relativenumber) then
@@ -21,22 +15,31 @@ function toggle_relative_line_number()
     vim.opt.relativenumber = true
   end
 end
+nnoremap("<leader>1", "<Cmd>lua toggle_relative_line_number()<CR>") -- toggle line numbers between relative and absolute
 
--- toggle line numbers between relative and absolute
-nnoremap("<leader>1", "<Cmd>lua toggle_relative_line_number()<CR>")
-
--- open new buffer
-nnoremap("<leader>be", "<Cmd>enew<CR>")
--- close current buffer 
-nnoremap("<leader>bd", "<Cmd>:bd<CR>")
--- cycle to next buffer
-nnoremap("<leader>bn", "<Cmd>:bn<CR>")
-
--- cycle to previous buffer
-nnoremap("<leader>bp", "<Cmd>:bp<CR>")
-
--- open most recently closed buffer: <C-i><C-o>
-
+-- bufferline
 nnoremap("<leader>gb", "<Cmd>BufferLinePick<CR>")
 nnoremap("<leader>gD", "<Cmd>BufferLinePickClose<CR>")
+nnoremap("<leader>be", "<Cmd>enew<CR>") -- open new buffer
+nnoremap("<leader>bd", "<Cmd>:bd<CR>")  -- close current buffer
+nnoremap("<leader>bn", "<Cmd>:bn<CR>")  -- cycle to next buffer
+nnoremap("<leader>bp", "<Cmd>:bp<CR>")  -- cycle to previous buffer
 
+
+-- telescope
+nnoremap("<leader>ff", "<Cmd>Telescope find_files<CR>")
+nnoremap("<leader>fg", "<Cmd>Telescope live_grep<CR>")
+nnoremap("<leader>fb", "<Cmd>Telescope buffers<CR>")
+nnoremap("<leader>fh", "<Cmd>Telescope help_tags<CR>")
+
+-- neovim-tree
+-- "W" collapses all directories
+nnoremap("<A-.>", "<Cmd>NvimTreeToggle<CR>") -- toggle neovim-tree
+nnoremap("<A-,>", "<Cmd>NvimTreeFocus<CR>")  -- focus neovim-tree
+
+-- treesitter
+-- "za" toggles collapse on current expression
+-- "zR" opens all expressions
+-- "zM" collapses all expressions
+-- "zr" opens one level of expressions from all open expressions
+-- "zm" collapses one level of expressions from all open expressions

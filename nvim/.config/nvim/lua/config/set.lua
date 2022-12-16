@@ -1,46 +1,60 @@
--- vim.opt.guicursor = ""
+local api = vim.api
+local g = vim.g
+local opt = vim.opt
 
-vim.opt.nu = true
-vim.opt.relativenumber = true
+local M = {}
 
-vim.opt.errorbells = false
+g.mapleader = " "
 
-vim.opt.tabstop = 2
-vim.opt.softtabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.expandtab = true
+-- opt.guicursor = ""
 
-vim.opt.clipboard = "unnamedplus"
+opt.nu = true
+opt.relativenumber = true
 
-vim.opt.smartindent = true
+opt.errorbells = false
 
-vim.opt.wrap = false
+opt.tabstop = 2
+opt.softtabstop = 2
+opt.shiftwidth = 2
+opt.expandtab = true
 
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
-vim.opt.undofile = true
+opt.clipboard = "unnamedplus"
 
-vim.opt.hlsearch = false
-vim.opt.incsearch = true
+opt.smartindent = true
 
-vim.opt.termguicolors = true
+opt.wrap = false
 
-vim.opt.scrolloff = 8
-vim.opt.signcolumn = "yes"
-vim.opt.isfname:append("@-@")
+opt.swapfile = false
+opt.backup = false
+opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+opt.undofile = true
+
+opt.hlsearch = false
+opt.incsearch = true
+
+opt.termguicolors = true
+
+opt.scrolloff = 8
+opt.signcolumn = "yes"
+opt.isfname:append("@-@")
 
 -- Give more space for displaying messages.
-vim.opt.cmdheight = 1
+opt.cmdheight = 1
 
 -- Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 -- delays and poor user experience.
-vim.opt.updatetime = 50
+opt.updatetime = 50
 
--- Don't pass messages to |ins-completion-menu|.
-vim.opt.shortmess:append("c")
+-- Don"t pass messages to |ins-completion-menu|.
+opt.shortmess:append("c")
 
--- vim.opt.colorcolumn = "80"
+-- opt.colorcolumn = "80"
 
-vim.g.mapleader = " "
+-- Code Folding
+opt.foldmethod = "expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.fillchars = "fold: "
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true
 

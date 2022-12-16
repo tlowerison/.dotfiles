@@ -1,9 +1,9 @@
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
+-- This file can be loaded by calling `lua require("plugins")` from your init.vim
 
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
 
-return require('packer').startup(function(use)
+return require("packer").startup(function(use)
   -- Packer can manage itself
   use("wbthomason/packer.nvim")
 
@@ -36,6 +36,7 @@ return require('packer').startup(function(use)
 
   use("simrat39/rust-tools.nvim")
 
-  use({ "mg979/vim-visual-multi", branch = "master" })
+  use({"mg979/vim-visual-multi", branch = "master"})
 
+  use {"kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async"}
 end)
