@@ -11,4 +11,5 @@ cargo install ripgrep
 rustup component add rust-analyzer
 rm "$HOME/.cargo/bin/rust-analyzer"
 ln -s "$(rustup which --toolchain stable rust-analyzer)" "$HOME/.cargo/bin/rust-analyzer"
+brew install gnu-sed
 ```

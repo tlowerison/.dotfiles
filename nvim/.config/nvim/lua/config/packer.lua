@@ -32,11 +32,11 @@ return require("packer").startup(function(use)
 
   use("sam4llis/nvim-tundra")
 
-  use("nvim-tree/nvim-web-devicons")
-
   use("simrat39/rust-tools.nvim")
 
   use({"mg979/vim-visual-multi", branch = "master"})
 
   use {"kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async"}
+
+  use("windwp/nvim-spectre")
 end)

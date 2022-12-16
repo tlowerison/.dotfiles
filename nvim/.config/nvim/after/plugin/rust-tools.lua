@@ -11,6 +11,7 @@ vim.opt.shortmess = vim.opt.shortmess + "c"
 local function on_attach(client, buffer)
   -- This callback is called when the LSP is atttached/enabled for this buffer
   -- we could set keymaps related to LSP, etc here.
+  --
 end
 
 -- Configure LSP through rust-tools.nvim plugin.
@@ -23,9 +24,10 @@ local opts = {
     },
     inlay_hints = {
       auto = true,
-      show_parameter_hints = false,
-      parameter_hints_prefix = "",
+      only_current_line = true,
       other_hints_prefix = "",
+      parameter_hints_prefix = "",
+      show_parameter_hints = false,
     },
   },
 
@@ -42,6 +44,9 @@ local opts = {
         checkOnSave = {
           enable = false, -- workspaces are too big to run check on save for a whole workspace
           command = "clippy",
+        },
+        procMacro = {
+          enable = true,
         },
       },
     },

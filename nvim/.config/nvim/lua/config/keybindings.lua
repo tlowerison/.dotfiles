@@ -25,7 +25,6 @@ nnoremap("<leader>bd", "<Cmd>:bd<CR>")  -- close current buffer
 nnoremap("<leader>bn", "<Cmd>:bn<CR>")  -- cycle to next buffer
 nnoremap("<leader>bp", "<Cmd>:bp<CR>")  -- cycle to previous buffer
 
-
 -- telescope
 nnoremap("<leader>ff", "<Cmd>Telescope find_files<CR>")
 nnoremap("<leader>fg", "<Cmd>Telescope live_grep<CR>")
@@ -43,3 +42,6 @@ nnoremap("<A-,>", "<Cmd>NvimTreeFocus<CR>")  -- focus neovim-tree
 -- "zM" collapses all expressions
 -- "zr" opens one level of expressions from all open expressions
 -- "zm" collapses one level of expressions from all open expressions
+
+-- nvim-spectre
+nnoremap("<leader>s", "<Cmd>lua require('spectre').open()<CR>")
