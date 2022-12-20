@@ -41,4 +41,13 @@ return require("packer").startup(function(use)
   use("windwp/nvim-spectre")
 
   use("airblade/vim-gitgutter")
+
+  use({
+    "nvim-lualine/lualine.nvim",
+    requires = { "nvim-tree/nvim-web-devicons", opt = true }
+  })
+  
+  use("windwp/nvim-autopairs")
+
+  use("folke/zen-mode.nvim")
 end)

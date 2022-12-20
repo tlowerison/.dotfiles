@@ -4,6 +4,9 @@ local vnoremap = Remap.vnoremap
 local inoremap = Remap.inoremap
 local xnoremap = Remap.xnoremap
 
+-- redo
+nnoremap("U", "<C-r>")
+
 -- relativenumber
 relativenumber = vim.opt.relativenumber
 function toggle_relative_line_number()
@@ -50,3 +53,6 @@ nnoremap("<leader>s", "<Cmd>lua require('spectre').open()<CR>")
 -- git-worktree
 nnoremap("<leader>gw", "<Cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>")
 nnoremap("<leader>cgw", "<Cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>")
+
+-- zenmode
+nnoremap("<leader>zz", "<Cmd>ZenMode<CR>")
