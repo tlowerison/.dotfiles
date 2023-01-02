@@ -43,9 +43,9 @@ opt.cmdheight = 1
 
 -- Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 -- delays and poor user experience.
-opt.updatetime = 50
+opt.updatetime = 100
 
--- Don"t pass messages to |ins-completion-menu|.
+-- Don't pass messages to |ins-completion-menu|.
 opt.shortmess:append("c")
 
 -- opt.colorcolumn = "80"
