@@ -4,6 +4,12 @@ local vnoremap = Remap.vnoremap
 local inoremap = Remap.inoremap
 local xnoremap = Remap.xnoremap
 
+-- delete/paste without yanking
+nnoremap("<leader>d", '"_d')
+vnoremap("<leader>d", '"_d')
+nnoremap("<leader>p", '"_dP')
+vnoremap("<leader>p", '"_dP')
+
 -- redo
 nnoremap("U", "<C-r>")
 
