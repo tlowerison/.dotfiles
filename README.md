@@ -17,4 +17,15 @@ brew install gnu-sed
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 mkdir -p ~/.vim/plugged
+
+# LaTeX
+# Install MacTex or other latex library
+# Make sure latexmk is installed on the command line (may need to install independently of latex distribution)
+brew tap zegervdv/zathura
+brew install zathura
+brew install zathura-pdf-poppler
+mkdir -p $(brew --prefix zathura)/lib/zathura
+ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
+brew install hashicorp/tap/terraform-ls
+brew install tflint
 ```
