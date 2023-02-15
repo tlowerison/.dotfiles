@@ -1,7 +1,7 @@
 local should_display_empty_buffers = true
 
 require("bufferline").setup{
-  highlights = require("catppuccin.groups.integrations.bufferline").get(),
+  -- highlights = require("catppuccin.groups.integrations.bufferline").get(),
   options = {
     offsets = {
       {
