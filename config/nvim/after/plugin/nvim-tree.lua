@@ -2,8 +2,14 @@ require("nvim-tree").setup({
   diagnostics = {
     enable = true,
     debounce_delay = 200,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    },
     severity = {
-      min = vim.diagnostic.severity.WARNING,
+      min = vim.diagnostic.severity.ERROR,
       max = vim.diagnostic.severity.ERROR,
     },
     show_on_dirs = true,

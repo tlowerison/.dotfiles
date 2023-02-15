@@ -1,6 +1,7 @@
-should_display_empty_buffers = true
+local should_display_empty_buffers = true
 
 require("bufferline").setup{
+  highlights = require("catppuccin.groups.integrations.bufferline").get(),
   options = {
     offsets = {
       {
@@ -15,7 +16,7 @@ require("bufferline").setup{
     show_buffer_icons = false,
     show_buffer_default_icon = false,
     always_show_bufferline = true,
-    custom_filter = function(bufnr, bufnrs)
+    custom_filter = function(bufnr)
       if is_empty_buffer(bufnr) then
         return should_display_empty_buffers
       end
@@ -31,8 +32,7 @@ vim.api.nvim_create_autocmd("BufAdd", {
   group = vim.api.nvim_create_augroup("BufferlineRemoveNoNameBuffers", { clear = true }),
   pattern = "?*",
   callback = function()
-    local has_empty_buffer = false
-    for i, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
       if vim.api.nvim_buf_is_loaded(bufnr) then
         if is_empty_buffer(bufnr) then
           should_display_empty_buffers = false
@@ -44,7 +44,7 @@ vim.api.nvim_create_autocmd("BufAdd", {
 })
 
 function remove_empty_buffers()
-  for i, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
     if is_empty_buffer(bufnr) then
       vim.cmd("bd " .. bufnr)
     end

@@ -1,6 +1,7 @@
 -- Basic configuration settings
 -- -----------------------------------------------
 vim.opt.autowrite      = true      -- write current buffer when moving buffers
+vim.opt.background     = "dark"    -- background mode
 vim.opt.backup         = false     -- no backup made of unsaved changes
 vim.opt.clipboard      = "unnamedplus" -- use system clipboard for yanks
 vim.opt.cmdheight      = 1         -- give more space for displaying messages
@@ -93,6 +94,7 @@ require("packer").startup(function(use)
 
   -- theme
   use("sam4llis/nvim-tundra")
+  use({ "catppuccin/nvim", as = "catppuccin" })
 
   -- rust-tools
   use("simrat39/rust-tools.nvim")
@@ -164,6 +166,11 @@ require("packer").startup(function(use)
 
   use("hashivim/vim-terraform")
 end)
+-- --------------------------------------------- --
+
+-- Theme
+-- --------------------------------------------- --
+vim.cmd.colorscheme("catppuccin")
 -- --------------------------------------------- --
 
 -- Keybindings
@@ -310,17 +317,22 @@ vim.keymap.set("n", "<leader>tw", "<Cmd>Twilight<CR>")
 
 
 -- zenmode
-vim.keymap.set("n", "<leader>zz", "<Cmd>Twilight<CR><Cmd>:lua configure_zen_diagnostics()<CR><Cmd>ZenMode<CR>")
+vim.keymap.set("n", "<leader>zz", "<Cmd>Twilight<CR><Cmd>lua configure_zen_diagnostics()<CR><Cmd>ZenMode<CR>")
+
 vim.g.were_lsp_diagnostics_on_prior_to_zen_mode = true
 function configure_zen_diagnostics()
   local toggle_lsp_diagnostics = require("toggle_lsp_diagnostics")
   if require("zen-mode").is_open() then
     if vim.g.were_lsp_diagnostics_on_prior_to_zen_mode then
       toggle_lsp_diagnostics.turn_on_diagnostics()
+      vim.opt.cmdheight = 1
+      require("lualine").hide({unhide = true})
     end
   else
     vim.g.were_lsp_diagnostics_on_prior_to_zen_mode = toggle_lsp_diagnostics.are_diagnostics_on()
     toggle_lsp_diagnostics.turn_off_diagnostics()
+    vim.opt.cmdheight = 1
+    require("lualine").hide()
   end
 end
 -- --------------------------------------------- --

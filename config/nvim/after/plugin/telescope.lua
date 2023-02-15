@@ -1,11 +1,5 @@
 local telescope = require("telescope")
-local pickers = require("telescope.pickers")
-local finders = require("telescope.finders")
-local previewers = require("telescope.previewers")
-local action_state = require("telescope.actions.state")
-local conf = require("telescope.config").values
 local actions = require("telescope.actions")
-
 
 telescope.load_extension("git_worktree")
 
@@ -17,10 +11,15 @@ telescope.setup({
 		qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
 
     border = true,
-    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
 		color_devicons = false,
     initial_mode = "insert",
     layout_config = {
+      horizontal = {
+        height = 0.9,
+        preview_cuttoff = 0.8,
+        prompt_position = "bottom",
+        width = 0.8,
+      },
       vertical = {
         height = 0.9,
         preview_cuttoff = 40,
@@ -28,8 +27,9 @@ telescope.setup({
         width = 0.8,
       },
     },
-    layout_strategy = "vertical",
+    layout_strategy = "horizontal",
 		prompt_prefix = "  ",
+    sort_strategy = "ascending",
 
 		mappings = {
 			i = {
