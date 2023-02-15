@@ -240,6 +240,16 @@ _G.packer_plugins = {
     path = "/Users/tlowerison/.local/share/nvim/site/pack/packer/start/texlab",
     url = "https://github.com/latex-lsp/texlab"
   },
+  ["toggle-lsp-diagnostics.nvim"] = {
+    loaded = true,
+    path = "/Users/tlowerison/.local/share/nvim/site/pack/packer/start/toggle-lsp-diagnostics.nvim",
+    url = "https://github.com/tlowerison/toggle-lsp-diagnostics.nvim"
+  },
+  ["twilight.nvim"] = {
+    loaded = true,
+    path = "/Users/tlowerison/.local/share/nvim/site/pack/packer/start/twilight.nvim",
+    url = "https://github.com/folke/twilight.nvim"
+  },
   ["vim-gitgutter"] = {
     loaded = true,
     path = "/Users/tlowerison/.local/share/nvim/site/pack/packer/start/vim-gitgutter",
@@ -263,7 +273,7 @@ _G.packer_plugins = {
   ["zen-mode.nvim"] = {
     loaded = true,
     path = "/Users/tlowerison/.local/share/nvim/site/pack/packer/start/zen-mode.nvim",
-    url = "https://github.com/folke/zen-mode.nvim"
+    url = "https://github.com/tlowerison/zen-mode.nvim"
   }
 }
 

@@ -31,4 +31,14 @@ brew install tflint
 
 sudo npm i -g bash-language-server
 # install shellcheck, https://github.com/koalaman/shellcheck#installing
+
+# null-ls integrations
+cargo install --git https://github.com/avencera/rustywind
+cargo install selene
+cargo install shellharden
+cargo install stylua
+sudo npm i -g typescript
+pip install ruff
+# install jq, see https://stedolan.github.io/jq/download
+# install opa, see https://github.com/open-policy-agent/opa/releases
 ```

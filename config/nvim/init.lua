@@ -76,6 +76,7 @@ require("packer").startup(function(use)
   -- language servers
   use("neovim/nvim-lspconfig") -- lsp client configuration
   use("jose-elias-alvarez/null-ls.nvim") -- adapt non-lsp servers to be used with the neovim lsp client
+  use("tlowerison/toggle-lsp-diagnostics.nvim")
 
   -- icons, needed for displaying icons in bufferline
   use("nvim-tree/nvim-web-devicons")
@@ -83,9 +84,7 @@ require("packer").startup(function(use)
   -- filetree sidebar
   use({
     "nvim-tree/nvim-tree.lua",
-    requires = {
-      "nvim-tree/nvim-web-devicons", -- optional, for file icons
-    },
+    requires = { "nvim-tree/nvim-web-devicons" }, -- optional, for file icons
     tag = "nightly" -- optional, updated every week. (see issue #1193)
   })
 
@@ -102,7 +101,9 @@ require("packer").startup(function(use)
   use({"mg979/vim-visual-multi", branch = "master"})
 
   -- subdued code folding appearance
-  use {"kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async"}
+  use({"kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async"})
+
+  use("folke/twilight.nvim")
 
   -- recursive find and replace
   use("windwp/nvim-spectre")
@@ -113,7 +114,7 @@ require("packer").startup(function(use)
   -- display vim status info in a line below buffer content
   use({
     "nvim-lualine/lualine.nvim",
-    requires = { "nvim-tree/nvim-web-devicons", opt = true }
+    requires = { "nvim-tree/nvim-web-devicons", opt = true },
   })
  
   -- automatch enclosing parentheses, brackets, braces, etc.
@@ -127,7 +128,7 @@ require("packer").startup(function(use)
   use("RRethy/nvim-treesitter-endwise")
 
   -- zen mode baby
-  use("folke/zen-mode.nvim")
+  use("tlowerison/zen-mode.nvim")
 
   -- markdown preview in default browser
   use({
@@ -186,7 +187,7 @@ vim.keymap.set("v", "<leader>p", '"_dP')
 -- insert empty line above and return to original cursor position
 vim.keymap.set("n", "<leader>O", "<Cmd>lua insert_empty_line_above()<CR>")
 function insert_empty_line_above()
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local _, col = unpack(vim.api.nvim_win_get_cursor(0))
   vim.cmd.normal("O")
   vim.cmd.normal("j")
   vim.cmd.normal("0")
@@ -196,7 +197,7 @@ end
 -- insert empty line above and return to original cursor position
 vim.keymap.set("n", "<leader>o", "<Cmd>lua insert_empty_line_below()<CR>")
 function insert_empty_line_below()
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local _, col = unpack(vim.api.nvim_win_get_cursor(0))
   vim.cmd.normal("o")
   vim.cmd.normal("k")
   vim.cmd.normal("0")
@@ -206,17 +207,16 @@ end
 
 -- toggle relativenumber
 vim.keymap.set("n", "<leader>1", "<Cmd>lua toggle_relative_line_number()<CR>") -- toggle line numbers between relative and absolute
-current_relativenumber = vim.opt.relativenumber
+vim.g.current_relativenumber = vim.opt.relativenumber
 function toggle_relative_line_number()
-  if(current_relativenumber) then
+  if vim.g.current_relativenumber then
     vim.opt.relativenumber = false
-    current_relativenumber = false
+    vim.g.current_relativenumber = false
   else
     vim.opt.relativenumber = true
-    current_relativenumber = true
+    vim.g.current_relativenumber = true
   end
 end
-
 
 
 -- bufferline
@@ -252,6 +252,8 @@ vim.keymap.set("n", "<leader>cgw", "<Cmd>lua require('telescope').extensions.git
 -- lsp diagnostics navigations
 vim.keymap.set("n", "<leader>dj", "<Cmd>lua vim.diagnostic.goto_next()<CR>")
 vim.keymap.set("n", "<leader>dk", "<Cmd>lua vim.diagnostic.goto_prev()<CR>")
+vim.keymap.set("n", "<leader>dd", "<Cmd>ToggleDiag<CR>")
+
 
 -- markdown-preview
 -- toggle markdown preview (opens markdown preview in default browser)
@@ -273,7 +275,7 @@ vim.keymap.set("n", "<leader>s", "<Cmd>lua require('spectre').open()<CR>")
 
 -- telescope
 -- open telescope
-vim.keymap.set("n", "<leader>t", "<Cmd>Telescope<CR>")
+vim.keymap.set("n", "<leader>T", "<Cmd>Telescope<CR>")
 
 -- open diagnostics
 vim.keymap.set("n", "<leader>fd", "<Cmd>Telescope diagnostics<CR>")
@@ -303,8 +305,24 @@ vim.keymap.set("n", "zR", require("ufo").openAllFolds)
 vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
 
 
+-- twilight
+vim.keymap.set("n", "<leader>tw", "<Cmd>Twilight<CR>")
+
+
 -- zenmode
-vim.keymap.set("n", "<leader>zz", "<Cmd>ZenMode<CR>")
+vim.keymap.set("n", "<leader>zz", "<Cmd>Twilight<CR><Cmd>:lua configure_zen_diagnostics()<CR><Cmd>ZenMode<CR>")
+vim.g.were_lsp_diagnostics_on_prior_to_zen_mode = true
+function configure_zen_diagnostics()
+  local toggle_lsp_diagnostics = require("toggle_lsp_diagnostics")
+  if require("zen-mode").is_open() then
+    if vim.g.were_lsp_diagnostics_on_prior_to_zen_mode then
+      toggle_lsp_diagnostics.turn_on_diagnostics()
+    end
+  else
+    vim.g.were_lsp_diagnostics_on_prior_to_zen_mode = toggle_lsp_diagnostics.are_diagnostics_on()
+    toggle_lsp_diagnostics.turn_off_diagnostics()
+  end
+end
 -- --------------------------------------------- --
 
 -- Autocommands
