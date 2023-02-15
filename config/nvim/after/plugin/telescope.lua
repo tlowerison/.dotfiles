@@ -11,13 +11,25 @@ telescope.load_extension("git_worktree")
 
 telescope.setup({
 	defaults = {
-		file_sorter = require("telescope.sorters").get_fzy_sorter,
-		prompt_prefix = " >",
-		color_devicons = true,
-
 		file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+		file_sorter = require("telescope.sorters").get_fzy_sorter,
 		grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
 		qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+
+    border = true,
+    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+		color_devicons = false,
+    initial_mode = "insert",
+    layout_config = {
+      vertical = {
+        height = 0.9,
+        preview_cuttoff = 40,
+        prompt_position = "bottom",
+        width = 0.8,
+      },
+    },
+    layout_strategy = "vertical",
+		prompt_prefix = "  ",
 
 		mappings = {
 			i = {
@@ -30,6 +42,7 @@ telescope.setup({
   pickers = {
     live_grep = {
       file_ignore_patterns = {
+        "Cargo.lock",
         "yarn.lock",
       },
     },

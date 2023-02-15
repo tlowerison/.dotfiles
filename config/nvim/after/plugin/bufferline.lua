@@ -46,7 +46,6 @@ vim.api.nvim_create_autocmd("BufAdd", {
 function remove_empty_buffers()
   for i, bufnr in ipairs(vim.api.nvim_list_bufs()) do
     if is_empty_buffer(bufnr) then
-      print(bufnr)
       vim.cmd("bd " .. bufnr)
     end
   end

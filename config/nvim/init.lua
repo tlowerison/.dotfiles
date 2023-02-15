@@ -18,6 +18,7 @@ vim.opt.foldexpr       = "nvim_treesitter#foldexpr()"
 vim.opt.hlsearch       = false     -- don't highlight search results
 vim.opt.incsearch      = true      -- jump to search results as search string is being typed
 vim.opt.isfname:append("@-@")      -- include the character "@" in pathnames (neded for fuzzy finder, etc.)
+vim.opt.laststatus     = 3         -- only display one status line rather than one per window
 vim.opt.linebreak      = true      -- break lines at words
 vim.opt.number         = true      -- show line numbers
 vim.opt.relativenumber = true      -- show relative linenumbers (can be toggled with "<leader>1")
@@ -72,8 +73,9 @@ require("packer").startup(function(use)
   -- bufferline
   use("akinsho/bufferline.nvim")
 
-  -- language server protocol config
-  use("neovim/nvim-lspconfig")
+  -- language servers
+  use("neovim/nvim-lspconfig") -- lsp client configuration
+  use("jose-elias-alvarez/null-ls.nvim") -- adapt non-lsp servers to be used with the neovim lsp client
 
   -- icons, needed for displaying icons in bufferline
   use("nvim-tree/nvim-web-devicons")
@@ -247,6 +249,10 @@ vim.keymap.set("n", "<leader>gw", "<Cmd>lua require('telescope').extensions.git_
 vim.keymap.set("n", "<leader>cgw", "<Cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>")
 
 
+-- lsp diagnostics navigations
+vim.keymap.set("n", "<leader>dj", "<Cmd>lua vim.diagnostic.goto_next()<CR>")
+vim.keymap.set("n", "<leader>dk", "<Cmd>lua vim.diagnostic.goto_prev()<CR>")
+
 -- markdown-preview
 -- toggle markdown preview (opens markdown preview in default browser)
 vim.keymap.set("n", "<leader>md", "<Cmd>MarkdownPreviewToggle<CR>")
@@ -268,6 +274,9 @@ vim.keymap.set("n", "<leader>s", "<Cmd>lua require('spectre').open()<CR>")
 -- telescope
 -- open telescope
 vim.keymap.set("n", "<leader>t", "<Cmd>Telescope<CR>")
+
+-- open diagnostics
+vim.keymap.set("n", "<leader>fd", "<Cmd>Telescope diagnostics<CR>")
 
 -- open fuzzyfinder (search for files)
 vim.keymap.set("n", "<leader>ff", "<Cmd>Telescope find_files<CR>")
@@ -298,3 +307,37 @@ vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
 vim.keymap.set("n", "<leader>zz", "<Cmd>ZenMode<CR>")
 -- --------------------------------------------- --
 
+-- Autocommands
+-- --------------------------------------------- --
+
+-- autoformat on save for these file types
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = {
+    "*.go",
+    "*.lua",
+    "*.py",
+    "*.js",
+    "*.jsx",
+    "*.rs",
+    "*.ts",
+    "*.tsx",
+  },
+  callback = function()
+    vim.lsp.buf.format({ timeout_ms = 200 })
+  end,
+  group = vim.api.nvim_create_augroup("Format", {}),
+})
+
+-- prevent status line from changing when switching focus to neovim tree
+vim.api.nvim_create_autocmd({"BufEnter","BufWinEnter","WinEnter","CmdwinEnter"}, {
+  pattern = "*",
+  callback = function()
+    local bufname = vim.api.nvim_buf_get_name(0)
+    if bufname == "NvimTree" then
+      vim.opt.laststatus = 2
+    else
+      vim.opt.laststatus = 3
+    end
+  end,
+})
+-- --------------------------------------------- --

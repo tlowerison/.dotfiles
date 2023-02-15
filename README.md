@@ -28,4 +28,7 @@ mkdir -p $(brew --prefix zathura)/lib/zathura
 ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
 brew install hashicorp/tap/terraform-ls
 brew install tflint
+
+sudo npm i -g bash-language-server
+# install shellcheck, https://github.com/koalaman/shellcheck#installing
 ```
