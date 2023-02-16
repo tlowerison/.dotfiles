@@ -13,7 +13,7 @@ require("nvim-tree").setup({
       max = vim.diagnostic.severity.ERROR,
     },
     show_on_dirs = true,
-    show_on_open_dirs = true,
+    show_on_open_dirs = false,
   },
   renderer = {
     group_empty = true,
