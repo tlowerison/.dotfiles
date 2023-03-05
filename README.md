@@ -41,4 +41,14 @@ sudo npm i -g typescript
 pip install ruff
 # install jq, see https://stedolan.github.io/jq/download
 # install opa, see https://github.com/open-policy-agent/opa/releases
+
+brew install tmux # install tmux
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm # Install tpm (tmux plugin manager)
+ln -s "$HOME/.dotfiles/config/tmux/config.conf" "$HOME/.tmux.conf"
+
+# install sshfs for mac from https://osxfuse.github.io
+
+# install bacon
+cargo install bacon
+bacon_prefs_path="$(bacon --prefs)" && rm "$bacon_prefs_path" && ln -s "$HOME/.dotfiles/config/bacon/prefs.toml" "$bacon_prefs_path"
 ```

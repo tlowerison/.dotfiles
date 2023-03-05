@@ -42,6 +42,8 @@ telescope.setup({
   pickers = {
     live_grep = {
       file_ignore_patterns = {
+        ".*/docs/.+",
+        "^docs/.+",
         "Cargo.lock",
         "yarn.lock",
       },

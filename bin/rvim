@@ -1,0 +1,84 @@
+#!/bin/bash
+# rvim: remote neovim, using sshfs
+
+if [[ "$(which sshfs)" == "" ]]; then
+  echo "rvim requires sshfs to be installed"
+fi
+
+mkdir "$HOME/.sshfs" 2>/dev/null
+rvim_cache_path="$HOME/.sshfs/cache"
+touch "$rvim_cache_path"
+
+host="$1"
+remote_path="$2"
+mount_path="$HOME/.sshfs/$host"
+
+if [[ "$remote_path" == "" ]]; then
+  remote_path="/"
+fi
+
+mkdir -p "$mount_path" 2>/dev/null
+
+host_config="$(ssh_host_config "$@")"
+
+host_name=$(echo "$host_config" | grep HostName | sed 's/HostName //' | sed 's/ *$//g')
+if [[ "$host_name" == "" ]]; then
+  echo "no HostName configuration found for this host in ssh config"
+  return 1
+fi
+
+user=$(echo "$host_config" | grep User | sed 's/User //' | sed 's/ *$//g')
+if [[ "$user" == "" ]]; then
+  echo "no User configuration found for this host in ssh config"
+  return 1
+fi
+
+port=$(echo "$host_config" | grep Port | sed 's/Port //' | sed 's/ *$//g')
+
+num_host_clients="$(grep "$host ... " "$rvim_cache_path" | sed "s:$host ... ::g")"
+if [[ "$num_host_clients" == "" ]]; then
+  echo "$host ... 0" >> "$rvim_cache_path"
+  num_host_clients=0
+fi
+sed_host=$(echo "$host" | sed 's/\//\\\//g')
+
+
+rvim_cleanup() {
+  local mount_path="$1"
+
+  local num_host_clients
+  num_host_clients="$(grep "$host ... " "$rvim_cache_path" | sed "s:$host ... ::g")"
+  if [[ "$num_host_clients" == "" || "$num_host_clients" == "0" ]]; then
+    num_host_clients=1
+  fi
+
+  sed_host=$(echo "$host" | sed 's/\//\\\//g')
+
+  # race conditions are very possible with this line, kind of
+  # just assume that we aren't opening two nvim windows at the
+  # exact time which for the most part seems pretty safe
+  sed -i '' "s/$sed_host \.\.\. $num_host_clients/$sed_host ... $((num_host_clients-1))/g" "$rvim_cache_path"
+
+  if [[ "$num_host_clients" == "1" ]]; then
+    diskutil unmount "$mount_path"
+  fi
+  trap - SIGHUP SIGINT SIGQUIT SIGABRT SIGALRM SIGTERM
+}
+export -f rvim_cleanup
+
+trap "rvim_cleanup '$mount_path'" SIGHUP SIGINT SIGQUIT SIGABRT SIGALRM SIGTERM
+
+# race conditions are very possible with this line, kind of
+# just assume that we aren't opening two nvim windows at the
+# exact time which for the most part seems pretty safe
+sed -i '' "s/$sed_host \.\.\. $num_host_clients/$sed_host ... $((num_host_clients+1))/g" "$rvim_cache_path"
+
+if [[ "$port" == "" ]]; then
+  [[ "$(ls "$mount_path" 2>/dev/null)" == "" ]] && sshfs -o default_permissions "$user@$host_name:$remote_path" "$mount_path"
+else
+  [[ "$(ls "$mount_path" 2>/dev/null)" == "" ]] && sshfs -o default_permissions "$user@$host_name:$remote_path" -p "$port" "$mount_path"
+fi
+
+nvim "$mount_path"
+
+rvim_cleanup "$mount_path"
