@@ -165,6 +165,9 @@ require("packer").startup(function(use)
   use("kazhala/close-buffers.nvim")
 
   use("hashivim/vim-terraform")
+
+  -- project local configurations for language servers
+  use("folke/neoconf.nvim")
 end)
 -- --------------------------------------------- --
 

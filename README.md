@@ -1,6 +1,7 @@
 # .dotfiles
 
 ## Setup
+
 ```sh
 cd
 git clone https://github.com/tlowerison/.dotfiles.git
@@ -51,4 +52,10 @@ ln -s "$HOME/.dotfiles/config/tmux/config.conf" "$HOME/.tmux.conf"
 # install bacon
 cargo install bacon
 bacon_prefs_path="$(bacon --prefs)" && rm "$bacon_prefs_path" && ln -s "$HOME/.dotfiles/config/bacon/prefs.toml" "$bacon_prefs_path"
+
+# install prettierd, a prettier daemon
+npm install -g @fsouza/prettierd
+
+# install eslint language server
+npm i -g vscode-langservers-extracted
 ```

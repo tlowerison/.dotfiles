@@ -1,3 +1,7 @@
+require("neoconf").setup({
+  -- override any of the default settings here
+})
+
 local lspconfig = require("lspconfig")
 local null_ls = require("null-ls")
 
@@ -40,15 +44,17 @@ null_ls.setup({-- you can reuse a shared lspconfig on_attach callback here
   sources = {
     null_ls.builtins.code_actions.shellcheck,
 
-    null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.diagnostics.opacheck,
     null_ls.builtins.diagnostics.ruff,
     null_ls.builtins.diagnostics.selene,
     null_ls.builtins.diagnostics.shellcheck,
 
-    null_ls.builtins.formatting.eslint,
     null_ls.builtins.formatting.jq,
-    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.formatting.prettierd.with({
+      condition = function(utils)
+        return utils.has_file({ ".prettierrc.yaml" })
+      end,
+    }),
     null_ls.builtins.formatting.rego,
     null_ls.builtins.formatting.rustywind,
     null_ls.builtins.formatting.shellharden,
@@ -62,6 +68,17 @@ local lspconfigs = {
     cmd_env = { INCLUDE_ALL_WORKSPACE_SYMBOLS = "true" },
     on_attach = on_attach,
     capabilities = capabilities,
+  },
+  eslint = {
+    settings = {
+      packageManager = "yarn",
+    },
+    on_attach = function(_, bufnr)
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = bufnr,
+        command = "EslintFixAll",
+      })
+    end,
   },
   gopls = {
   	cmd = { "gopls" },
@@ -167,4 +184,3 @@ require("rust-tools").setup({
     },
   },
 })
-
