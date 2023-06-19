@@ -177,6 +177,9 @@ require("rust-tools").setup({
           command = "check",
           extraArgs = { "--target-dir", "/tmp/rust-analyzer-check" },
         },
+        diagnostics = {
+          disabled = {"inactive-code"},
+        },
         procMacro = {
           enable = true,
         },
