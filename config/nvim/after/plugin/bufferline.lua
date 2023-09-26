@@ -1,6 +1,7 @@
 local should_display_empty_buffers = true
+local bufferline = require("bufferline")
 
-require("bufferline").setup{
+bufferline.setup{
   -- highlights = require("catppuccin.groups.integrations.bufferline").get(),
   options = {
     offsets = {
@@ -14,14 +15,13 @@ require("bufferline").setup{
     },
     color_icons = false,
     show_buffer_icons = false,
-    -- show_buffer_default_icon = false,
     always_show_bufferline = true,
     custom_filter = function(bufnr)
       if is_empty_buffer(bufnr) then
         return should_display_empty_buffers
       end
       return true
-    end
+    end,
   }
 }
 

@@ -1,3 +1,7 @@
+-- uncomment the line below if you need to debug any language servers
+-- you can watch logs using the command 'tail -f "$HOME/.local/state/nvim/lsp.log"'
+-- vim.lsp.set_log_level('debug')
+
 require("neoconf").setup({
   -- override any of the default settings here
 })
@@ -9,21 +13,21 @@ require("toggle_lsp_diagnostics").init()
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-local function on_attach()
+local function on_attach(_, bufnr)
   -- This callback is called when the LSP is atttached/enabled for this buffer
   -- we could set keymaps related to LSP, etc here.
   -- Code navigation and shortcuts
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-  vim.keymap.set("n", "ga", vim.lsp.buf.code_action)
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = bufnr})
+  vim.keymap.set("n", "ga", vim.lsp.buf.code_action, {buffer = bufnr})
   
-  vim.keymap.set("n", "K", vim.lsp.buf.hover)
-  vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition)
-  vim.keymap.set("n", "gD", vim.lsp.buf.implementation)
-  vim.keymap.set("n", "<c-k>", vim.lsp.buf.signature_help)
-  vim.keymap.set("n", "1gD", vim.lsp.buf.type_definition)
-  vim.keymap.set("n", "gr", vim.lsp.buf.references)
-  vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol)
-  vim.keymap.set("n", "gW", vim.lsp.buf.workspace_symbol)
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = bufnr})
+  vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, {buffer = bufnr})
+  vim.keymap.set("n", "gD", vim.lsp.buf.implementation, {buffer = bufnr})
+  vim.keymap.set("n", "<c-k>", vim.lsp.buf.signature_help, {buffer = bufnr})
+  vim.keymap.set("n", "1gD", vim.lsp.buf.type_definition, {buffer = bufnr})
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, {buffer = bufnr})
+  vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol, {buffer = bufnr})
+  vim.keymap.set("n", "gW", vim.lsp.buf.workspace_symbol, {buffer = bufnr})
 end
 
 -- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
@@ -147,7 +151,8 @@ end
 
 -- rust-tools will configure and enable certain LSP features for us.
 -- See https://github.com/simrat39/rust-tools.nvim#configuration
-require("rust-tools").setup({
+local rust_tools = require("rust-tools")
+rust_tools.setup({
   tools = {
     runnables = {
       use_telescope = true,
