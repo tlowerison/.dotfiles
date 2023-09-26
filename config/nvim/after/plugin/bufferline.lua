@@ -14,7 +14,7 @@ require("bufferline").setup{
     },
     color_icons = false,
     show_buffer_icons = false,
-    show_buffer_default_icon = false,
+    -- show_buffer_default_icon = false,
     always_show_bufferline = true,
     custom_filter = function(bufnr)
       if is_empty_buffer(bufnr) then
@@ -24,6 +24,19 @@ require("bufferline").setup{
     end
   }
 }
+
+function remove_empty_buffers()
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    if is_empty_buffer(bufnr) then
+      vim.cmd("bd " .. bufnr)
+    end
+  end
+  should_display_empty_buffers = true
+end
+
+function is_empty_buffer(bufnr)
+  return vim.api.nvim_buf_get_name(bufnr) == "" and vim.api.nvim_buf_line_count(bufnr) == 1
+end
 
 -- remove empty buffers when opening file buffer
 -- creates smooth experience when opening a file from
@@ -42,16 +55,3 @@ vim.api.nvim_create_autocmd("BufAdd", {
     vim.fn.timer_start(0, remove_empty_buffers)
   end,
 })
-
-function remove_empty_buffers()
-  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-    if is_empty_buffer(bufnr) then
-      vim.cmd("bd " .. bufnr)
-    end
-  end
-  should_display_empty_buffers = true
-end
-
-function is_empty_buffer(bufnr)
-  return vim.api.nvim_buf_get_name(bufnr) == "" and vim.api.nvim_buf_line_count(bufnr) == 1
-end
