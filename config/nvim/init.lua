@@ -47,6 +47,12 @@ if vim.fn.has("termguicolors") == 1 then
   vim.opt.termguicolors = true
 end
 
+-- change to "debug" if needed
+-- output is sent to "$HOME/.local/state/nvim/lsp.log"
+vim.lsp.set_log_level("off")
+
+-- additional logs are sent to "$HOME/.local/state/nvim/log"
+-- and need to cleared out every once in a while
 
 -- Load plugins
 -- --------------------------------------------- --
@@ -168,6 +174,18 @@ require("packer").startup(function(use)
 
   -- project local configurations for language servers
   use("folke/neoconf.nvim")
+
+  -- surf through your document and move elements around using the nvim-treesitter API
+  use("ziontee113/syntax-tree-surfer")
+
+  -- adds vscode-like pictograms to neovim built-in lsp
+  use("onsails/lspkind.nvim")
+
+  -- copilot server and snippet generation
+  use("zbirenbaum/copilot.lua")
+
+  -- copilot integration into nvim-cmp
+  use({ "zbirenbaum/copilot-cmp", after = { "copilot.lua" } })
 end)
 -- --------------------------------------------- --
 
