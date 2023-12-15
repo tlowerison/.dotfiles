@@ -32,6 +32,10 @@ cmp.setup({
     ["<C-e>"] = cmp.mapping.abort(),
     ["<Tab>"] = cmp.mapping(
       function(fallback)
+        if not has_words_before() then
+          fallback()
+          return
+        end
         if cmp.visible() then
           cmp.select_next_item()
         -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable() 
