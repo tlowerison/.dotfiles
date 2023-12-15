@@ -80,7 +80,7 @@ cmp.setup({
     format = lspkind.cmp_format({
       mode = "text_symbol", -- show only symbol annotations
       preset = "codicons",
-      maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+      maxwidth = 80, -- prevent the popup from showing more than provided characters (e.g 80 will not show more than 80 characters)
       ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
       symbol_map = { Copilot = "" },
     })
