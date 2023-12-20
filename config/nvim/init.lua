@@ -170,6 +170,7 @@ require("packer").startup(function(use)
   -- delete multiple buffers with queries
   use("kazhala/close-buffers.nvim")
 
+  -- terraform syntax highlighting
   use("hashivim/vim-terraform")
 
   -- project local configurations for language servers
