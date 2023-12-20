@@ -287,6 +287,7 @@ vim.keymap.set("n", "<leader>md", "<Cmd>MarkdownPreviewToggle<CR>")
 -- neovim-tree
 -- "W" collapses all directories
 vim.keymap.set("n", "<A-.>", "<Cmd>NvimTreeToggle<CR>") -- toggle neovim-tree
+vim.keymap.set("n", "<A- >", "<Cmd>NvimTreeFindFile<CR>") -- find file in neovim-tree
 
 
 -- cycle window focus
