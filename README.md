@@ -60,8 +60,5 @@ npm install -g @fsouza/prettierd
 npm i -g vscode-langservers-extracted
 
 # install gopls language server
-dir="${HOME}/.local/share/nvim/site/pack/nvim-lspconfig/opt/nvim-lspconfig/"
-mkdir -p "$dir"
-cd "$dir"
-git clone 'https://github.com/neovim/nvim-lspconfig.git' .
+go install golang.org/x/tools/gopls@latest
 ```
