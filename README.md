@@ -61,4 +61,10 @@ npm i -g vscode-langservers-extracted
 
 # install gopls language server
 go install golang.org/x/tools/gopls@latest
+
+# install ra-multiplex, a rust-analyzer multiplexer which allows multiple clients to talk to the same ra language server
+cargo install --git https://github.com/pr2502/ra-multiplex
+
+# On MacOS, need to create config file otherwise ra-multiplex immediately fails
+mkdir ~/Library/Application\ Support/ra-multiplex && touch ~/Library/Application\ Support/ra-multiplex/config.toml
 ```

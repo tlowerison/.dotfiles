@@ -42,6 +42,11 @@ vim.opt.wrap           = false     -- do not wrap long lines
 vim.g.mapleader             = " " -- set global leader key
 vim.g.terraform_fmt_on_save = 1
 vim.g.terraform_align       = 1
+vim.g.vimtex_view_enabled   = 1
+vim.g.vimtex_view_method    = "skim"
+vim.g.compiler_method       = "latexmk"
+-- vim.g.vimtex_view_general_viewer = "okular"
+-- vim.g.vimtex_view_general_options = "--unique file:@pdf\\#src:@line@tex"
 
 if vim.fn.has("termguicolors") == 1 then
   vim.opt.termguicolors = true
@@ -49,10 +54,8 @@ end
 
 -- change to "debug" if needed
 -- output is sent to "$HOME/.local/state/nvim/lsp.log"
-vim.lsp.set_log_level("off")
-
--- additional logs are sent to "$HOME/.local/state/nvim/log"
--- and need to cleared out every once in a while
+-- logs need to be cleared out every once in a while
+-- vim.lsp.set_log_level("debug")
 
 -- Load plugins
 -- --------------------------------------------- --
@@ -66,16 +69,17 @@ require("packer").startup(function(use)
   use("nvim-telescope/telescope.nvim")
 
   -- code completion
-  use("hrsh7th/nvim-cmp") -- completion engine
+  use("hrsh7th/nvim-cmp") -- code completion engine
   use("hrsh7th/cmp-nvim-lsp") -- language server completions
   use("hrsh7th/cmp-buffer") -- current buffer completions
   use("hrsh7th/cmp-path") -- path completions
   use("hrsh7th/cmp-cmdline") -- commandline completions
   use("saadparwaiz1/cmp_luasnip") -- snippet completions
-  use("kdheepak/cmp-latex-symbols") -- latex symbol completions
  
-  -- snippets
+  -- snippets mechanism
   use("L3MON4D3/LuaSnip")
+  -- snippet database
+  use("rafamadriz/friendly-snippets")
 
   -- bufferline
   use("akinsho/bufferline.nvim")
@@ -149,7 +153,8 @@ require("packer").startup(function(use)
   })
 
   -- latex support in neovim
-  use("latex-lsp/texlab")
+  -- use("latex-lsp/texlab")
+  use("lervag/vimtex")
 
   -- Cargo.toml auxiliary support
   use({
@@ -186,7 +191,7 @@ require("packer").startup(function(use)
   use("zbirenbaum/copilot.lua")
 
   -- copilot integration into nvim-cmp
-  use({ "zbirenbaum/copilot-cmp", after = { "copilot.lua" } })
+  use({ "zbirenbaum/copilot-cmp", after = {"copilot.lua"} })
 end)
 -- --------------------------------------------- --
 
@@ -203,6 +208,12 @@ vim.keymap.set("n", "<Leader>h", ":help ")
 -- easier redo command
 vim.keymap.set("n", "U", "<C-r>")
 
+-- easier page up
+vim.keymap.set("n", "<leader>j", "<C-b>")
+
+-- easier page down
+vim.keymap.set("n", "<leader>k", "<C-f>")
+
 -- delete/paste without yanking
 vim.keymap.set("n", "<leader>d", '"_d')
 vim.keymap.set("v", "<leader>d", '"_d')
@@ -210,7 +221,6 @@ vim.keymap.set("n", "<leader>p", '"_dP')
 vim.keymap.set("v", "<leader>p", '"_dP')
 
 -- insert empty line above and return to original cursor position
-vim.keymap.set("n", "<leader>O", "<Cmd>lua insert_empty_line_above()<CR>")
 function insert_empty_line_above()
   local _, col = unpack(vim.api.nvim_win_get_cursor(0))
   vim.cmd.normal("O")
@@ -218,9 +228,9 @@ function insert_empty_line_above()
   vim.cmd.normal("0")
   vim.cmd.normal(tostring(col) .. "l")
 end
+vim.keymap.set("n", "<leader>O", insert_empty_line_above)
 
 -- insert empty line above and return to original cursor position
-vim.keymap.set("n", "<leader>o", "<Cmd>lua insert_empty_line_below()<CR>")
 function insert_empty_line_below()
   local _, col = unpack(vim.api.nvim_win_get_cursor(0))
   vim.cmd.normal("o")
@@ -228,10 +238,10 @@ function insert_empty_line_below()
   vim.cmd.normal("0")
   vim.cmd.normal(tostring(col) .. "l")
 end
+vim.keymap.set("n", "<leader>o", insert_empty_line_below)
 
 
 -- toggle relativenumber
-vim.keymap.set("n", "<leader>1", "<Cmd>lua toggle_relative_line_number()<CR>") -- toggle line numbers between relative and absolute
 vim.g.current_relativenumber = vim.opt.relativenumber
 function toggle_relative_line_number()
   if vim.g.current_relativenumber then
@@ -242,6 +252,8 @@ function toggle_relative_line_number()
     vim.g.current_relativenumber = true
   end
 end
+-- toggle line numbers between relative and absolute
+vim.keymap.set("n", "<leader>1", toggle_relative_line_number)
 
 
 -- bufferline
@@ -291,8 +303,44 @@ vim.keymap.set("n", "<A-.>", "<Cmd>NvimTreeToggle<CR>") -- toggle neovim-tree
 vim.keymap.set("n", "<A- >", "<Cmd>NvimTreeFindFile<CR>") -- find file in neovim-tree
 
 
+-- copilot
+function toggle_copilot()
+  local cmp = require("cmp")
+  local sources = cmp.get_config().sources
+  local copilot_source_index = -1
+  for i = #sources, 1, -1 do
+    if sources[i].name == "copilot" then
+      copilot_source_index = i
+    end
+  end
+  if copilot_source_index == -1 then
+    table.insert(sources, { name = "copilot" })
+  else
+    table.remove(sources, copilot_source_index)
+  end
+  cmp.setup.buffer({ sources = sources })
+end
+
+-- toggle Copilot
+vim.keymap.set("n", "<leader>cp", toggle_copilot)
+
 -- cycle window focus
 vim.keymap.set("n", "<A-,>", "<C-W><C-W>")
+
+-- LuaSnip shortcuts -- for latex files only
+function luasnip_jump_if_jumpable()
+  -- if not vim.bo.filetype == "tex" then
+  --   return "jk"
+  -- end
+  local ls = require("luasnip")
+  if ls.jumpable(1) then
+    ls.jump(1)
+  else
+    return "jk"
+  end
+end
+vim.keymap.set("i", "jk", luasnip_jump_if_jumpable, {expr=true})
+
 
 -- nvim-spectre
 -- open nvim-spectre (recursive find and replace)
@@ -335,25 +383,33 @@ vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
 vim.keymap.set("n", "<leader>tw", "<Cmd>Twilight<CR>")
 
 
--- zenmode
-vim.keymap.set("n", "<leader>zz", "<Cmd>Twilight<CR><Cmd>lua configure_zen_diagnostics()<CR><Cmd>ZenMode<CR>")
+-- vimtex
+vim.keymap.set("n", "<leader>c", "<Cmd>VimtexCompile<CR>")
 
+
+-- zenmode
 vim.g.were_lsp_diagnostics_on_prior_to_zen_mode = true
 function configure_zen_diagnostics()
-  local toggle_lsp_diagnostics = require("toggle_lsp_diagnostics")
+  vim.cmd("Twilight")
+  local tld = require("toggle_lsp_diagnostics")
   if require("zen-mode").is_open() then
     if vim.g.were_lsp_diagnostics_on_prior_to_zen_mode then
-      toggle_lsp_diagnostics.turn_on_diagnostics()
+      tld.turn_on_diagnostics()
       vim.opt.cmdheight = 1
       require("lualine").hide({unhide = true})
     end
   else
-    vim.g.were_lsp_diagnostics_on_prior_to_zen_mode = toggle_lsp_diagnostics.are_diagnostics_on()
-    toggle_lsp_diagnostics.turn_off_diagnostics()
+    vim.g.were_lsp_diagnostics_on_prior_to_zen_mode = tld.are_diagnostics_on()
+    tld.turn_off_diagnostics()
     vim.opt.cmdheight = 1
     require("lualine").hide()
   end
+  vim.cmd("ZenMode")
 end
+
+-- toggle zen mode
+vim.keymap.set("n", "<leader>zz", configure_zen_diagnostics)
+
 -- --------------------------------------------- --
 
 -- Autocommands
@@ -361,18 +417,9 @@ end
 
 -- autoformat on save for these file types
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = {
-    "*.go",
-    "*.lua",
-    "*.py",
-    "*.js",
-    "*.jsx",
-    "*.rs",
-    "*.ts",
-    "*.tsx",
-  },
+  pattern = "*",
   callback = function()
-    vim.lsp.buf.format({ timeout_ms = 200 })
+    vim.lsp.buf.format({ timeout_ms = 1000 })
   end,
   group = vim.api.nvim_create_augroup("Format", {}),
 })

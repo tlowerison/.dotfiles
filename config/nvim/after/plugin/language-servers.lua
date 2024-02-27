@@ -177,16 +177,24 @@ rust_tools.setup({
       -- to enable rust-analyzer settings visit:
       -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
       ["rust-analyzer"] = {
+        cargo = {
+          features = "all",
+        },
         checkOnSave = {
           enable = true,
           command = "check",
-          extraArgs = { "--target-dir", "/tmp/rust-analyzer-check" },
+          extraArgs = { "--target-dir", "target/rust-analyzer" },
         },
         diagnostics = {
           disabled = {"inactive-code"},
         },
         procMacro = {
           enable = true,
+        },
+        server = {
+          extraEnv = {
+            ["RUSTUP_TOOLCHAIN"] = "stable",
+          },
         },
       },
     },
