@@ -61,7 +61,7 @@ null_ls.setup({-- you can reuse a shared lspconfig on_attach callback here
     }),
     null_ls.builtins.formatting.rego,
     null_ls.builtins.formatting.rustywind,
-    null_ls.builtins.formatting.shellharden,
+    -- null_ls.builtins.formatting.shellharden, -- causes way more problems than is worth, just use shellcheck for diagnostics
     null_ls.builtins.formatting.stylua,
   },
 })

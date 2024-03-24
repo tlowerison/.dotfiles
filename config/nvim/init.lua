@@ -55,7 +55,7 @@ end
 -- change to "debug" if needed
 -- output is sent to "$HOME/.local/state/nvim/lsp.log"
 -- logs need to be cleared out every once in a while
--- vim.lsp.set_log_level("debug")
+vim.lsp.set_log_level("off")
 
 -- Load plugins
 -- --------------------------------------------- --

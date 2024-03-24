@@ -1,0 +1,4 @@
+[global]
+disable_stdin = false
+hide_env_diff = true
+load_dotenv = true
