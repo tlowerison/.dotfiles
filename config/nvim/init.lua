@@ -3,7 +3,6 @@
 vim.opt.autowrite      = true      -- write current buffer when moving buffers
 vim.opt.background     = "dark"    -- background mode
 vim.opt.backup         = false     -- no backup made of unsaved changes
-vim.opt.clipboard      = "unnamedplus" -- use system clipboard for yanks
 vim.opt.cmdheight      = 1         -- give more space for displaying messages
 vim.opt.completeopt    = "menu,menuone,noselect" -- set complete options to use nvim-cmp
 vim.opt.cursorline     = true      -- highlight current line
@@ -47,6 +46,24 @@ vim.g.vimtex_view_method    = "skim"
 vim.g.compiler_method       = "latexmk"
 -- vim.g.vimtex_view_general_viewer = "okular"
 -- vim.g.vimtex_view_general_options = "--unique file:@pdf\\#src:@line@tex"
+
+-- use system clipboard for yanks
+if vim.fn.has("unnamedplus") then
+  vim.opt.clipboard = "unnamedplus"
+else if vim.fn.executable("xsel") == 1 then
+  vim.opt.clipboard = {                 
+    name = "xsel",
+    copy = {
+      ["+"] = "xsel --nodetach -ib",
+      ["*"] = "xsel --nodetach -ip"
+    },
+    paste = {
+      ["+"] = "xsel -ob",
+      ["*"] = "xsel -op"
+    },
+    cache_enabled = true,
+  }
+end
 
 if vim.fn.has("termguicolors") == 1 then
   vim.opt.termguicolors = true
