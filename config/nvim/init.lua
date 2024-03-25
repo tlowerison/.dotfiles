@@ -50,7 +50,7 @@ vim.g.compiler_method       = "latexmk"
 -- use system clipboard for yanks
 if vim.fn.has("unnamedplus") then
   vim.opt.clipboard = "unnamedplus"
-else if vim.fn.executable("xsel") == 1 then
+elseif vim.fn.executable("xsel") == 1 then
   vim.opt.clipboard = {                 
     name = "xsel",
     copy = {
