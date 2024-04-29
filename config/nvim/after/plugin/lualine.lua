@@ -1,6 +1,20 @@
 require("lualine").setup({
   options = {
+    theme = "catppuccin",
     icons_enabled = false,
+    disabled_filetypes = {
+      winbar = {
+        'aerial',
+        'NvimTree',
+        'starter',
+        'Trouble',
+        'qf',
+      },
+      statusline = {
+        'starter',
+        'NvimTree',
+      },
+    },
   },
   sections = {
     lualine_a = {"mode"},
@@ -14,7 +28,7 @@ require("lualine").setup({
       },
       "diff",
     },
-    lualine_x = {},
+    lualine_x = { "aerial" },
     lualine_y = {
       {
         "diagnostics",

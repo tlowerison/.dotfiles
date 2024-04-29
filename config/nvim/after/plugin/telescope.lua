@@ -1,6 +1,7 @@
 local telescope = require("telescope")
 local actions = require("telescope.actions")
 
+telescope.load_extension("aerial")
 telescope.load_extension("git_worktree")
 
 telescope.setup({

@@ -1,6 +1,11 @@
 require("copilot").setup({
-  panel = { enabled = false },
-  suggestion = { enabled = false },
+  panel = {
+    enabled = true,
+  },
+  suggestion = {
+    enabled = true,
+    debounce = 200,
+  },
   filetypes = {
     yaml = false,
     markdown = false,

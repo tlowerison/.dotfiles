@@ -154,12 +154,6 @@ cmp.setup.filetype("gitcommit", {
   })
 })
 
--- Set up lspconfig.
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
--- rust-analyzer lspconfig is setup by rust-tools
-require("lspconfig")["tsserver"].setup({ capabilities = capabilities })
-
 cmp.event:on(
   "confirm_done",
   cmp_autopairs.on_confirm_done()

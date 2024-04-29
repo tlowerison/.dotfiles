@@ -57,13 +57,16 @@ bacon_prefs_path="$(bacon --prefs)" && rm "$bacon_prefs_path" && ln -s "$HOME/.d
 npm install -g @fsouza/prettierd
 
 # install eslint language server
-npm i -g vscode-langservers-extracted
+npm i -g eslint_d
 
 # install gopls language server
 go install golang.org/x/tools/gopls@latest
 
 # install ra-multiplex, a rust-analyzer multiplexer which allows multiple clients to talk to the same ra language server
 cargo install --git https://github.com/pr2502/ra-multiplex
+
+# install vtsls, a faster typescript language server: https://github.com/yioneko/vtsls
+npm install -g @vtsls/language-server
 
 # On MacOS, need to create config file otherwise ra-multiplex immediately fails
 mkdir ~/Library/Application\ Support/ra-multiplex && touch ~/Library/Application\ Support/ra-multiplex/config.toml

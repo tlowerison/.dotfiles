@@ -4,8 +4,8 @@ require("ufo").setup({
   preview = {
     win_config = {
       border = {"", "─", "", "", "", "─", "", ""},
-      winhighlight = "Normal:Folded",
-      winblend = 0
+      winhighlight = "Normal:Normal",
+      winblend = 100,
     },
     mappings = {
       scrollU = "<C-u>",
@@ -17,3 +17,6 @@ require("ufo").setup({
   end
 })
 
+-- -- change winhl after setting the winhighlight group above
+-- -- that way no hightlighting occurs
+-- vim.wo.winhl = "Normal:NoFolded"

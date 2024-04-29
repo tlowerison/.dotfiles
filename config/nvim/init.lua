@@ -21,7 +21,7 @@ vim.opt.isfname:append("@-@")      -- include the character "@" in pathnames (ne
 vim.opt.laststatus     = 3         -- only display one status line rather than one per window
 vim.opt.linebreak      = true      -- break lines at words
 vim.opt.number         = true      -- show line numbers
-vim.opt.relativenumber = true      -- show relative linenumbers (can be toggled with "<leader>1")
+vim.opt.relativenumber = true      -- show relative linenumbers (can be toggled with "<leader>rn")
 vim.opt.ruler          = true	     -- shows cursor position in current line
 vim.opt.scrolloff      = 8         -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.shiftwidth     = 2         -- default indentation width is 2 spaces
@@ -38,12 +38,12 @@ vim.opt.undofile       = true      -- use files for undos
 vim.opt.updatetime     = 100
 vim.opt.wrap           = false     -- do not wrap long lines
 
+vim.g.compiler_method       = "latexmk"
 vim.g.mapleader             = " " -- set global leader key
 vim.g.terraform_fmt_on_save = 1
 vim.g.terraform_align       = 1
 vim.g.vimtex_view_enabled   = 1
 vim.g.vimtex_view_method    = "skim"
-vim.g.compiler_method       = "latexmk"
 -- vim.g.vimtex_view_general_viewer = "okular"
 -- vim.g.vimtex_view_general_options = "--unique file:@pdf\\#src:@line@tex"
 
@@ -83,6 +83,8 @@ require("packer").startup(function(use)
   -- lodash of neovim
   use("nvim-lua/plenary.nvim")
   use("nvim-lua/popup.nvim")
+
+  -- menu ui
   use("nvim-telescope/telescope.nvim")
 
   -- code completion
@@ -99,7 +101,7 @@ require("packer").startup(function(use)
   use("rafamadriz/friendly-snippets")
 
   -- bufferline
-  use("akinsho/bufferline.nvim")
+  use({ "akinsho/bufferline.nvim", after = "catppuccin" })
 
   -- language servers
   use("neovim/nvim-lspconfig") -- lsp client configuration
@@ -115,11 +117,13 @@ require("packer").startup(function(use)
     requires = { "nvim-tree/nvim-web-devicons" }, -- optional, for file icons
   })
 
+  -- Neovim plugin for a code outline window
+  use("stevearc/aerial.nvim")
+
   -- syntax parsing
   use("nvim-treesitter/nvim-treesitter")
 
   -- theme
-  use("sam4llis/nvim-tundra")
   use({ "catppuccin/nvim", as = "catppuccin" })
 
   -- rust-tools
@@ -154,6 +158,9 @@ require("packer").startup(function(use)
   -- treesitter extension for identifying closing parentheses, etc.
   -- useful for codefolding using treesitter fold expression
   use("RRethy/nvim-treesitter-endwise")
+
+  -- Show code context
+  use("nvim-treesitter/nvim-treesitter-context")
 
   -- zen mode baby
   use("tlowerison/zen-mode.nvim")
@@ -208,6 +215,15 @@ require("packer").startup(function(use)
 
   -- copilot integration into nvim-cmp
   use({ "zbirenbaum/copilot-cmp", after = {"copilot.lua"} })
+
+  use({
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    requires = { {"nvim-lua/plenary.nvim"} },
+  })
+
+  -- A Neovim plugin for macOS, Linux & Windows that automatically changes the editor appearance based on system settings
+  use("f-person/auto-dark-mode.nvim")
 end)
 -- --------------------------------------------- --
 
@@ -218,17 +234,14 @@ end)
 -- easier edit command
 vim.keymap.set("n", "<Leader>e", ":edit ")
 
--- easier help command
-vim.keymap.set("n", "<Leader>h", ":help ")
-
 -- easier redo command
 vim.keymap.set("n", "U", "<C-r>")
 
 -- easier page up
-vim.keymap.set("n", "<leader>j", "<C-b>")
+vim.keymap.set("n", "<leader>k", "<C-b>")
 
 -- easier page down
-vim.keymap.set("n", "<leader>k", "<C-f>")
+vim.keymap.set("n", "<leader>j", "<C-f>")
 
 -- delete/paste without yanking
 vim.keymap.set("n", "<leader>d", '"_d')
@@ -269,7 +282,7 @@ function toggle_relative_line_number()
   end
 end
 -- toggle line numbers between relative and absolute
-vim.keymap.set("n", "<leader>1", toggle_relative_line_number)
+vim.keymap.set("n", "<leader>rn", toggle_relative_line_number)
 
 
 -- bufferline
@@ -294,12 +307,36 @@ vim.keymap.set("n", "<leader>bn", "<Cmd>bn<CR>")
 vim.keymap.set("n", "<leader>bp", "<Cmd>bp<CR>")
 
 
+-- aerial
+-- toggle aerial outline window
+vim.keymap.set("n", "<leader>a", "<Cmd>AerialToggle<CR>")
+vim.keymap.set("n", "<leader>ta", "<Cmd>Telescope aerial<CR>")
+
+
 -- git-worktree
 -- open git worktree menu
 vim.keymap.set("n", "<leader>gw", "<Cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>")
 
 -- create new git worktree
 vim.keymap.set("n", "<leader>cgw", "<Cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>")
+
+
+-- harpoon
+vim.keymap.set("n", "<leader>h", "<Cmd>lua require('harpoon'):list():add()<CR>")
+vim.keymap.set("n", "<leader>hr", "<Cmd>lua require('harpoon'):list():remove()<CR>")
+vim.keymap.set("n", "<leader>1", "<Cmd>lua require('harpoon'):list():select(1)<CR>")
+vim.keymap.set("n", "<leader>2", "<Cmd>lua require('harpoon'):list():select(2)<CR>")
+vim.keymap.set("n", "<leader>3", "<Cmd>lua require('harpoon'):list():select(3)<CR>")
+vim.keymap.set("n", "<leader>4", "<Cmd>lua require('harpoon'):list():select(4)<CR>")
+vim.keymap.set("n", "<leader>5", "<Cmd>lua require('harpoon'):list():select(5)<CR>")
+vim.keymap.set("n", "<leader>6", "<Cmd>lua require('harpoon'):list():select(6)<CR>")
+vim.keymap.set("n", "<leader>7", "<Cmd>lua require('harpoon'):list():select(6)<CR>")
+vim.keymap.set("n", "<leader>8", "<Cmd>lua require('harpoon'):list():select(6)<CR>")
+vim.keymap.set("n", "<leader>9", "<Cmd>lua require('harpoon'):list():select(6)<CR>")
+
+-- Toggle previous & next buffers stored within Harpoon list
+vim.keymap.set("n", "<C-S-P>", "<Cmd>lua require('harpoon'):list():prev()<CR>")
+vim.keymap.set("n", "<C-S-N>", "<Cmd>lua require('harpoon'):list():next()<CR>")
 
 
 -- lsp diagnostics navigations
@@ -339,6 +376,9 @@ end
 
 -- toggle Copilot
 vim.keymap.set("n", "<leader>cp", toggle_copilot)
+
+-- display Copilot panel
+vim.keymap.set("n", "<leader>cP", "<Cmd>Copilot panel<CR>")
 
 -- cycle window focus
 vim.keymap.set("n", "<A-,>", "<C-W><C-W>")

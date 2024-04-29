@@ -1,17 +1,17 @@
 local should_display_empty_buffers = true
 local bufferline = require("bufferline")
 
-bufferline.setup{
-  -- highlights = require("catppuccin.groups.integrations.bufferline").get(),
+bufferline.setup({
+  highlights = require("catppuccin.groups.integrations.bufferline").get(),
   options = {
     offsets = {
       {
         filetype = "NvimTree",
-        text = "-=<=-=<=-=<=-=>=-=>=-=>=-",
+        text = "",
         -- highlight = "Directory",
         separator = " ", -- use a "true" to enable the default, or set your own character
         text_align = "center",
-      }
+      },
     },
     color_icons = false,
     show_buffer_icons = false,
@@ -23,7 +23,7 @@ bufferline.setup{
       return true
     end,
   }
-}
+})
 
 function remove_empty_buffers()
   for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
