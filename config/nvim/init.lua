@@ -471,15 +471,6 @@ vim.keymap.set("n", "<leader>zz", configure_zen_diagnostics)
 -- Autocommands
 -- --------------------------------------------- --
 
--- autoformat on save for these file types
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*",
-  callback = function()
-    vim.lsp.buf.format({ timeout_ms = 1000 })
-  end,
-  group = vim.api.nvim_create_augroup("Format", {}),
-})
-
 -- prevent status line from changing when switching focus to neovim tree
 vim.api.nvim_create_autocmd({"BufEnter","BufWinEnter","WinEnter","CmdwinEnter"}, {
   pattern = "*",
@@ -492,4 +483,3 @@ vim.api.nvim_create_autocmd({"BufEnter","BufWinEnter","WinEnter","CmdwinEnter"},
     end
   end,
 })
--- --------------------------------------------- --
