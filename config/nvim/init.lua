@@ -159,9 +159,6 @@ require("packer").startup(function(use)
   -- useful for codefolding using treesitter fold expression
   use("RRethy/nvim-treesitter-endwise")
 
-  -- Show code context
-  use("nvim-treesitter/nvim-treesitter-context")
-
   -- zen mode baby
   use("tlowerison/zen-mode.nvim")
 

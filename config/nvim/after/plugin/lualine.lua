@@ -26,9 +26,11 @@ require("lualine").setup({
         newfile_status = false,
         path = 1,
       },
-      "diff",
+      "aerial",
     },
-    lualine_x = { "aerial" },
+    -- lualine_y = {},
+    -- lualine_z = {},
+    lualine_x = { "diff" },
     lualine_y = {
       {
         "diagnostics",
