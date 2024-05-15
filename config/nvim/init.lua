@@ -228,6 +228,9 @@ end)
 -- Keybindings
 -- --------------------------------------------- --
 
+-- prevent end of line jump from including newline when in visual mode
+vim.keymap.set("v", "$", "$h")
+
 -- easier edit command
 vim.keymap.set("n", "<Leader>e", ":edit ")
 

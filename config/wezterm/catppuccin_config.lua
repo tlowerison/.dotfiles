@@ -1,0 +1,1 @@
+../nvim/lua/catppuccin_config.lua
