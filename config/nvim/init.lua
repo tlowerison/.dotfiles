@@ -239,9 +239,11 @@ vim.keymap.set("n", "U", "<C-r>")
 
 -- easier page up
 vim.keymap.set("n", "<leader>k", "<C-b>")
+vim.keymap.set("v", "<leader>k", "<C-b>")
 
 -- easier page down
 vim.keymap.set("n", "<leader>j", "<C-f>")
+vim.keymap.set("v", "<leader>j", "<C-f>")
 
 -- delete/paste without yanking
 vim.keymap.set("n", "<leader>d", '"_d')

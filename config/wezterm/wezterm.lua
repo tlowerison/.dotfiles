@@ -12,6 +12,7 @@ config.enable_scroll_bar = true
 config.font = wezterm.font("JetBrains Mono")
 config.font_size = 14.0
 config.native_macos_fullscreen_mode = true
+config.scrollback_lines = 3500
 
 config.colors = {
    foreground = catppuccin_colors.text, 
@@ -24,7 +25,10 @@ config.keys = {
   {
     key = "k",
     mods = "CMD",
-    action = action.SendString("\x0c"),
+    action = action.Multiple({
+      action.ClearScrollback("ScrollbackAndViewport"),
+      action.SendKey({ key = "L", mods = "CTRL" }),
+    }),
   },
   -- close current pane
   {
